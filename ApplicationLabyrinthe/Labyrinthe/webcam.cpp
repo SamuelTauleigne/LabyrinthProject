@@ -2,20 +2,45 @@
 
 Webcam::Webcam()
 {
+    // Setting a new camera object
     webcam = new VideoCapture(0);
-    // int width=webcam->get(CAP_PROP_FRAME_WIDTH);
-    // int height=webcam->get(CAP_PROP_FRAME_HEIGHT);
-    webcamImage = new Mat();
-    webcamImageRGB = new Mat();
-    grayWebcamImage = new Mat();
-    img = new QImage();
-    faceCascadeClassifier = new CascadeClassifier();
+    webcam->set(CAP_PROP_FRAME_WIDTH, frameWidth);
+    webcam->set(CAP_PROP_FRAME_HEIGHT, frameHeight);
+
+    // Initializing motion Detection
+    initializeMotionDetection();
+
 }
 
 Webcam::~Webcam()
 {
     delete webcam;
     delete webcamImage;
+    delete webcamImageRGB;
+    delete grayWebcamImage;
+    delete img;
+    delete faceCascadeClassifier;
+}
+
+void Webcam::initializeMotionDetection()
+{
+    if(webcam->isOpened())
+    {
+        // Getting initialFrame
+        *webcam >> *initialFrame;
+        cv::flip(*initialFrame, *initialFrame, 1);
+        cv::cvtColor(Mat(*initialFrame, *workingRect), *initialFrame, COLOR_BGR2GRAY);
+        // imshow("Initial Frame", *initialFrame);
+
+        // Creating the resultMatchTemplateImage image result
+        int result_cols = initialFrame->cols-templateWidth  + 1;
+        int result_rows = initialFrame->rows-templateHeight + 1;
+        resultMatchTemplateImage->create(result_cols, result_rows, CV_32FC1);
+    }
+    else
+    {
+        std::cerr << "Error Opening Webcam" << std::endl;
+    }
 }
 
 void Webcam::updateImage()
@@ -58,6 +83,34 @@ void Webcam::detectFaces()
     {
         std::cerr << "Error loading haarcascade_frontalface_alt.xml" << std::endl;
     }
+}
+
+void Webcam::detectMotion()
+{
+    Mat frameRect;
+
+    // Extracting working rect in webcamImage and converting it to gray
+    cv::cvtColor(Mat(*webcamImage, *workingRect), frameRect, COLOR_BGR2GRAY);
+
+    // Extracting template image in initialFrame
+    Mat templateImage(*initialFrame, *templateRect);
+
+    // Matching between the working rect and the templateImage in initialFrame
+    matchTemplate(frameRect, templateImage, *resultMatchTemplateImage, TM_CCORR_NORMED);
+    // Localizing the best match with minMaxLoc
+    double minVal; double maxVal; Point minLoc; Point maxLoc;
+    minMaxLoc(*resultMatchTemplateImage, &minVal, &maxVal, &minLoc, &maxLoc);
+    // Computing the translation vector between the origin and the matching rect
+    Point vect(maxLoc.x-templateRect->x,maxLoc.y-templateRect->y);
+
+    // Drawing green rectangle and the translation vector
+    rectangle(*webcamImageRGB, *workingRect, Scalar( 0, 255, 0), 2);
+    Point p(workingCenter->x+vect.x,workingCenter->y+vect.y);
+    arrowedLine(*webcamImageRGB, *workingCenter, p, Scalar(255,255,255), 2);
+
+    // Swaping matrixes
+    swap(*initialFrameRect, frameRect);
+
 }
 
 QImage* Webcam::getImage()

@@ -63,6 +63,7 @@ int main(int, char**)
 
         // Extract template image in frame1
         Mat templateImage(frameRect1,templateRect);
+
         // Do the Matching between the working rect in frame2 and the templateImage in frame1
         matchTemplate( frameRect2, templateImage, resultImage, TM_CCORR_NORMED );
         // Localize the best match with minMaxLoc

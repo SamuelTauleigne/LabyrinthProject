@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     /*
      * We display a new image when the timer times out.
      */
-    int timeout = 50;
+    int timeout = 5;
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(displayWebcamImage()));
     timer->start(timeout);
@@ -36,6 +36,8 @@ void MainWindow::displayWebcamImage()
     frontWebcam->updateImage();
     // Detecting faces on the image
     frontWebcam->detectFaces();
+    // Detecting motion
+    frontWebcam->detectMotion();
     // Getting this new image
     frontWebcamImage = frontWebcam->getImage();
 
