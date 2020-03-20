@@ -29,6 +29,29 @@
        <property name="autoFillBackground">
         <bool>false</bool>
        </property>
+       <widget class="QWidget" name="mapWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>120</width>
+          <height>80</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="chronoLabel">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>10</y>
+          <width>47</width>
+          <height>14</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ready ?</string>
+        </property>
+       </widget>
       </widget>
      </item>
      <item>
@@ -99,9 +122,6 @@
           <string>imageLabel_</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="webcamWidget" native="true"/>
        </item>
       </layout>
      </item>

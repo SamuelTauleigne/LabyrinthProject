@@ -29,6 +29,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     Webcam* frontWebcam;
     QImage* frontWebcamImage;
+    int *timeElapsed;
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -36,6 +37,7 @@ public:
 
 public slots:
     void displayWebcamImage();
+    void addSecond();
 
 private:
     Ui::MainWindow *ui;

@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     // Creating a new QImage Object
     frontWebcamImage = new QImage();
 
+    // Initializing timer
+    *timeElapsed = 0;
+
     // Connecting the displayWebcamImage() method to the timeout of a timer
     /*
      * We display a new image when the timer times out.
@@ -22,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(displayWebcamImage()));
     timer->start(timeout);
+    QTimer *chrono = new QTimer(this);
+    connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
+    chrono->start(1000);
 
 }
 
@@ -47,3 +53,8 @@ void MainWindow::displayWebcamImage()
     ui->imageLabel_->resize(ui->imageLabel_->pixmap()->size());
 }
 
+void MainWindow::addSecond()
+{
+    (*timeElapsed)++;
+    ui->chronoLabel->setText(QString::fromStdString(std::to_string(*timeElapsed) + " sec"));
+}

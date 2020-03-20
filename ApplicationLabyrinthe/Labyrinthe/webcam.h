@@ -27,7 +27,7 @@ class Webcam
     Rect* templateRect = new Rect((workingRect->width-templateWidth)/2,(workingRect->height-templateHeight)/2,templateWidth,templateHeight);
     Point* workingCenter = new Point(workingRect->x+subImageWidth/2,workingRect->y+subImageHeight/2);
     Mat* initialFrame = new Mat();
-    Mat* initialFrameRect = new Mat();
+    // Mat* initialFrameRect = new Mat();
     Mat* resultMatchTemplateImage = new Mat();
 
     VideoCapture* webcam;
@@ -44,6 +44,7 @@ public:
     void updateImage();
     void detectFaces();
     void detectMotion();
+    void move(int x, int y);
     QImage* getImage();
 };
 

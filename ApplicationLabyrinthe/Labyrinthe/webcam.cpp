@@ -108,9 +108,64 @@ void Webcam::detectMotion()
     Point p(workingCenter->x+vect.x,workingCenter->y+vect.y);
     arrowedLine(*webcamImageRGB, *workingCenter, p, Scalar(255,255,255), 2);
 
-    // Swaping matrixes
-    swap(*initialFrameRect, frameRect);
+    // Detecting direction
+    // std::cout << vect.x << " " << vect.y << std::endl;
+    move(vect.x, vect.y);
 
+    // Swaping matrixes
+    swap(templateImage, frameRect);
+}
+
+void Webcam::move(int x, int y)
+{
+    int thresholdH = 15;
+    int thresholdL = 3;
+    if (thresholdL < x && x < thresholdH && thresholdL < y && y < thresholdH)
+    {
+        if (x > y)
+            std::cout << "Droite" << std::endl;
+        else
+            std::cout << "Bas" << std::endl;
+    }
+    else if (thresholdL < x && x < thresholdH && thresholdL < -y && -y < thresholdH)
+    {
+        if (x > -y)
+            std::cout << "Droite" << std::endl;
+        else
+            std::cout << "Haut" << std::endl;
+    }
+    else if (thresholdL < -x && -x < thresholdH && thresholdL < y && y < thresholdH)
+    {
+        if (-x > y)
+            std::cout << "Gauche" << std::endl;
+        else
+            std::cout << "Bas" << std::endl;
+    }
+    else if (thresholdL < -x && -x < thresholdH && thresholdL < -y && -y < thresholdH)
+    {
+        if (x < y)
+            std::cout << "Gauche" << std::endl;
+        else
+            std::cout << "Haut" << std::endl;
+    }
+    else if (-thresholdL <= x && x <= thresholdL)
+    {
+        if (y > thresholdL)
+            std::cout << "Bas" << std::endl;
+        else if (y < -thresholdL)
+            std::cout << "Haut" << std::endl;
+        else
+            std::cout << "Neutre" << std::endl;
+    }
+    else if (-thresholdL <= y && y <= thresholdL)
+    {
+        if (x > thresholdL)
+            std::cout << "Droite" << std::endl;
+        else if (x < -thresholdL)
+            std::cout << "Gauche" << std::endl;
+        else
+            std::cout << "Neutre" << std::endl;
+    }
 }
 
 QImage* Webcam::getImage()
