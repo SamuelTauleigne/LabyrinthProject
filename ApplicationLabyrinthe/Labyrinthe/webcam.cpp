@@ -29,12 +29,12 @@ void Webcam::initializeMotionDetection()
         // Getting initialFrame
         *webcam >> *initialFrame;
         cv::flip(*initialFrame, *initialFrame, 1);
-        cv::cvtColor(Mat(*initialFrame, *workingRect), *initialFrame, COLOR_BGR2GRAY);
+        cv::cvtColor(Mat(*initialFrame, *workingRect), *initialFrameRect, COLOR_BGR2GRAY);
         // imshow("Initial Frame", *initialFrame);
 
         // Creating the resultMatchTemplateImage image result
-        int result_cols = initialFrame->cols-templateWidth  + 1;
-        int result_rows = initialFrame->rows-templateHeight + 1;
+        int result_cols = initialFrameRect->cols-templateWidth  + 1;
+        int result_rows = initialFrameRect->rows-templateHeight + 1;
         resultMatchTemplateImage->create(result_cols, result_rows, CV_32FC1);
     }
     else
@@ -93,7 +93,7 @@ void Webcam::detectMotion()
     cv::cvtColor(Mat(*webcamImage, *workingRect), frameRect, COLOR_BGR2GRAY);
 
     // Extracting template image in initialFrame
-    Mat templateImage(*initialFrame, *templateRect);
+    Mat templateImage(*initialFrameRect, *templateRect);
 
     // Matching between the working rect and the templateImage in initialFrame
     matchTemplate(frameRect, templateImage, *resultMatchTemplateImage, TM_CCORR_NORMED);
@@ -113,13 +113,13 @@ void Webcam::detectMotion()
     move(vect.x, vect.y);
 
     // Swaping matrixes
-    swap(templateImage, frameRect);
+    swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
 }
 
 void Webcam::move(int x, int y)
 {
     int thresholdH = 15;
-    int thresholdL = 3;
+    int thresholdL = 0;
     if (thresholdL < x && x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (x > y)

@@ -14,21 +14,18 @@ MainWindow::MainWindow(QWidget *parent)
     // Creating a new QImage Object
     frontWebcamImage = new QImage();
 
-    // Initializing timer
-    *timeElapsed = 0;
-
     // Connecting the displayWebcamImage() method to the timeout of a timer
     /*
      * We display a new image when the timer times out.
      */
-    int timeout = 5;
-    QTimer *timer = new QTimer(this);
+    timer = new QTimer(this);
+    // timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(displayWebcamImage()));
     timer->start(timeout);
-    QTimer *chrono = new QTimer(this);
-    connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
-    chrono->start(1000);
 
+    chrono = new QTimer(this);
+    connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
+    // chrono->start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +52,20 @@ void MainWindow::displayWebcamImage()
 
 void MainWindow::addSecond()
 {
-    (*timeElapsed)++;
-    ui->chronoLabel->setText(QString::fromStdString(std::to_string(*timeElapsed) + " sec"));
+    timeElapsed++;
+    ui->chronoLabel->setText(QString::fromStdString(std::to_string(timeElapsed) + " sec"));
+}
+
+
+void MainWindow::on_startPushButton_clicked()
+{
+    timeElapsed = 0;
+    this->chrono->start(1000);
+}
+
+void MainWindow::on_resetPushButton_clicked()
+{
+    this->chrono->stop();
+    timeElapsed = 0;
+    ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
 }
