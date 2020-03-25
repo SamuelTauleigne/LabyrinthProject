@@ -44,7 +44,7 @@ public:
     void updateImage();
     void detectFaces();
     void detectMotion();
-    void move(int x, int y);
+    void move(int x, int y); // Today, this method only display the direction but it will be used to move the player.
     QImage* getImage();
 };
 

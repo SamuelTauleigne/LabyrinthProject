@@ -19,13 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
      * We display a new image when the timer times out.
      */
     timer = new QTimer(this);
-    // timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(displayWebcamImage()));
     timer->start(timeout);
 
     chrono = new QTimer(this);
     connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
-    // chrono->start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -37,10 +35,14 @@ void MainWindow::displayWebcamImage()
 {
     // Updating the image caught by the webcam
     frontWebcam->updateImage();
-    // Detecting faces on the image
-    frontWebcam->detectFaces();
-    // Detecting motion
-    frontWebcam->detectMotion();
+    // If the game is running :
+    if (isMoving)
+    {
+        // Detecting faces on the image
+        frontWebcam->detectFaces();
+        // Detecting motion
+        frontWebcam->detectMotion();
+    }
     // Getting this new image
     frontWebcamImage = frontWebcam->getImage();
 
@@ -60,11 +62,13 @@ void MainWindow::addSecond()
 void MainWindow::on_startPushButton_clicked()
 {
     this->chrono->start(1000);
+    this->haveToMove(true);
 }
 
 void MainWindow::on_resetPushButton_clicked()
 {
     this->chrono->stop();
+    this->haveToMove(false);
     timeElapsed = 0;
     ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
 }
@@ -72,4 +76,5 @@ void MainWindow::on_resetPushButton_clicked()
 void MainWindow::on_pausePushButton_clicked()
 {
     this->chrono->stop();
+    this->haveToMove(false);
 }

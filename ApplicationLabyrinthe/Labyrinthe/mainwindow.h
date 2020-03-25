@@ -33,10 +33,12 @@ class MainWindow : public QMainWindow
     int timeElapsed = 0;
     QTimer *timer;
     QTimer *chrono;
+    bool isMoving = false; // Tells if we should move or not.
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void haveToMove(bool movingOrNotMoving) {isMoving = movingOrNotMoving;}
 
 public slots:
     void displayWebcamImage();
@@ -45,7 +47,6 @@ public slots:
 
 private slots:
     void on_startPushButton_clicked();
-
 
     void on_resetPushButton_clicked();
 
