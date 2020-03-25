@@ -49,6 +49,8 @@ private slots:
 
     void on_resetPushButton_clicked();
 
+    void on_pausePushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

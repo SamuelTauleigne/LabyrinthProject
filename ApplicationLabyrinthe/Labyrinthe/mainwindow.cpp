@@ -59,7 +59,6 @@ void MainWindow::addSecond()
 
 void MainWindow::on_startPushButton_clicked()
 {
-    timeElapsed = 0;
     this->chrono->start(1000);
 }
 
@@ -68,4 +67,9 @@ void MainWindow::on_resetPushButton_clicked()
     this->chrono->stop();
     timeElapsed = 0;
     ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
+}
+
+void MainWindow::on_pausePushButton_clicked()
+{
+    this->chrono->stop();
 }

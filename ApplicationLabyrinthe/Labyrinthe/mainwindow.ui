@@ -66,9 +66,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pausePushButton">
+           <property name="text">
+            <string>Pause Game</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="resetPushButton">
            <property name="text">
-            <string>Reset</string>
+            <string>Reset Game</string>
            </property>
           </widget>
          </item>
