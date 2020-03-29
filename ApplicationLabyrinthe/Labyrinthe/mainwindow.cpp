@@ -78,3 +78,8 @@ void MainWindow::on_pausePushButton_clicked()
     this->chrono->stop();
     this->haveToMove(false);
 }
+
+void MainWindow::on_leavePushButton_clicked()
+{
+    this->close();
+}

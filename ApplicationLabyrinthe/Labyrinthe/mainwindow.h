@@ -52,6 +52,8 @@ private slots:
 
     void on_pausePushButton_clicked();
 
+    void on_leavePushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -80,6 +80,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="leavePushButton">
+           <property name="text">
+            <string>Leave Game</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="sizeOptionLayout">
            <item>
             <widget class="QLabel" name="sizeOptionLabel">
