@@ -52,12 +52,24 @@ void MainWindow::displayWebcamImage()
     ui->imageLabel_->resize(ui->imageLabel_->pixmap()->size());
 }
 
+/*
+ * The method addSecond() increments timeElapsed and displays the new value in the corresponding label.
+ */
 void MainWindow::addSecond()
 {
     timeElapsed++;
     ui->chronoLabel->setText(QString::fromStdString(std::to_string(timeElapsed) + " sec"));
 }
 
+
+
+/*
+ * Push Buttons slots :
+ *  - Start makes the chronometer start and enables moves
+ *  - Reset makes the chronometer stop, resets it and disables moves
+ *  - Pause stops the chronometer and disable the moves
+ *  - Leave closes the window and leaves the application
+ */
 
 void MainWindow::on_startPushButton_clicked()
 {
