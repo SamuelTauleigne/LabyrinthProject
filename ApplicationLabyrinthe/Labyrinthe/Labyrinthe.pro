@@ -1,4 +1,18 @@
-QT       += core gui
+# configuration Qt
+QT       += core gui opengl widgets
+TEMPLATE  = app
+
+# ajout des libs au linker
+win32 {
+    win32-msvc* {
+        LIBS     += opengl32.lib glu32.lib
+    } else {
+        LIBS     += -lopengl32 -lglu32
+    }
+}
+else {
+        LIBS     += -lGL -lGLU
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,12 +30,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    carte.cpp \
+    clef.cpp \
+    joueur.cpp \
+    labyrinthe.cpp \
     main.cpp \
     mainwindow.cpp \
+    mur.cpp \
+    myglwidget.cpp \
     webcam.cpp
 
 HEADERS += \
+    carte.h \
+    cell.h \
+    clef.h \
+    joueur.h \
+    labyrinthe.h \
     mainwindow.h \
+    mur.h \
+    myglwidget.h \
     webcam.h
 
 FORMS += \

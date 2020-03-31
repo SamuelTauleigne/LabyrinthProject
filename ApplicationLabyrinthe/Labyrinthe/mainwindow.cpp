@@ -7,6 +7,17 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // Set Up UI
     ui->setupUi(this);
+    // ui->chronoLabel->setStyleSheet("QLabel {color : white;}");
+    ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
+
+    ui->gridLayout->addWidget(glwidget);
+
+    // Labyrinthe 3D
+    // MyGLWidget* labyrinth3D = new MyGLWidget();
+    // ui->openGLWidget = labyrinth3D;
+    // ui->openGLWidget->setLayout(labyrinth3D->layout());
+    // labyrinth3D->show();
+    // ui->openGLWidget->show();
 
     // Creating a new Webcam Object
     frontWebcam = new Webcam();
@@ -24,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     chrono = new QTimer(this);
     connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
+
+    glTimer = new QTimer(this);
+    connect(glTimer, SIGNAL(timeout()), this->glwidget, SLOT(paintGL()));
+    glTimer->start(glTimeout);
 }
 
 MainWindow::~MainWindow()
@@ -94,4 +109,13 @@ void MainWindow::on_pausePushButton_clicked()
 void MainWindow::on_leavePushButton_clicked()
 {
     this->close();
+}
+
+
+// Fonction de gestion d'interactions clavier
+void MainWindow::keyPressEvent(QKeyEvent * event){
+    if (isMoving)
+    {
+        this->glwidget->keyPressEvent(event);
+    }
 }
