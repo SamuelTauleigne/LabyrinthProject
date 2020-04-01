@@ -44,6 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete frontWebcam;
+    delete frontWebcamImage;
+    delete timer;
+    delete chrono;
+    delete glTimer;
 }
 
 void MainWindow::displayWebcamImage()
@@ -116,6 +121,84 @@ void MainWindow::on_leavePushButton_clicked()
 void MainWindow::keyPressEvent(QKeyEvent * event){
     if (isMoving)
     {
-        this->glwidget->keyPressEvent(event);
+        switch (event->key()){
+        case Qt::Key_Z :
+            if (this->glwidget->getFixX() == this->glwidget->getCamX()+1){
+                this->glwidget->setCamX(this->glwidget->getCamX()+1);
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->moveTo(0.1,0);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()-1){
+                this->glwidget->setCamY(this->glwidget->getCamY()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+                this->moveTo(0,-0.1);
+            } else if (this->glwidget->getFixX() == this->glwidget->getCamX()-1){
+                this->glwidget->setCamX(this->glwidget->getCamX()-1);
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->moveTo(-0.1,0);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()+1){
+                this->glwidget->setCamY(this->glwidget->getCamY()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+                this->moveTo(0,0.1);
+            }
+            break;
+        case Qt::Key_S :
+            if (this->glwidget->getFixX() == this->glwidget->getCamX()+1){
+                this->glwidget->setCamX(this->glwidget->getCamX()-1);
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->moveTo(-0.1,0);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()-1){
+                this->glwidget->setCamY(this->glwidget->getCamY()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+                this->moveTo(0,0.1);
+            } else if (this->glwidget->getFixX() == this->glwidget->getCamX()-1){
+                this->glwidget->setCamX(this->glwidget->getCamX()+1);
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->moveTo(0.1,0);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()+1){
+                this->glwidget->setCamY(this->glwidget->getCamY()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+                this->moveTo(0,-0.1);
+            }
+            break;
+        case Qt::Key_D :
+            if (this->glwidget->getFixX() == this->glwidget->getCamX()+1){
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()-1){
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+            } else if (this->glwidget->getFixX() == this->glwidget->getCamX()-1){
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()+1){
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+            }
+            break;
+        case Qt::Key_Q :
+            if (this->glwidget->getFixX() == this->glwidget->getCamX()+1){
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()-1){
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()+1);
+            } else if (this->glwidget->getFixX() == this->glwidget->getCamX()-1){
+                this->glwidget->setFixX(this->glwidget->getFixX()+1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+            } else if (this->glwidget->getFixY() == this->glwidget->getCamY()+1){
+                this->glwidget->setFixX(this->glwidget->getFixX()-1);
+                this->glwidget->setFixY(this->glwidget->getFixY()-1);
+            }
+            break;
+        }
+        // Acceptation de l'événement et mise a jour de la scene
+        event->accept();
+        // update();
+        this->glwidget->update();
     }
+}
+
+void MainWindow::moveTo(float x, float y)
+{
+    this->glwidget->getLabyrinth()->deplacerJoueur(x, y);
 }

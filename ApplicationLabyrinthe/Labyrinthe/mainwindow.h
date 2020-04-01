@@ -43,6 +43,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void haveToMove(bool movingOrNotMoving) {isMoving = movingOrNotMoving;}
+    void moveTo(float x, float y);
 
 protected:
     void keyPressEvent(QKeyEvent * event);

@@ -21,8 +21,20 @@ public:
 
     // Constructeur
     MyGLWidget(QWidget * parent = nullptr);
-    // Fonction de gestion d'interactions clavier
-    void keyPressEvent(QKeyEvent * event);
+    // Getters & Setters
+    float getCamX() {return cam_x;}
+    float getCamY() {return cam_y;}
+    float getCamZ() {return cam_z;}
+    float getFixX() {return fix_x;}
+    float getFixY() {return fix_y;}
+    float getFixZ() {return fix_z;}
+    float setCamX(float newCamX) {cam_x = newCamX;}
+    float setCamY(float newCamY) {cam_y = newCamY;}
+    float setCamZ(float newCamZ) {cam_z = newCamZ;}
+    float setFixX(float newFixX) {fix_x = newFixX;}
+    float setFixY(float newFixY) {fix_y = newFixY;}
+    float setFixZ(float newFixZ) {fix_z = newFixZ;}
+    Labyrinthe* getLabyrinth() {return labyrinthe;}
 
 protected:
 
@@ -32,12 +44,7 @@ protected:
     // Fonction de redimensionnement
     void resizeGL(int width, int height);
 
-
-
-
-
 private:
-
     Labyrinthe* labyrinthe = new Labyrinthe(6,10);
     // Coordonnées à supprimer par la suite (juste ppiur tester les déplacements pour le déggogage)
     float cam_x = 1.5;
