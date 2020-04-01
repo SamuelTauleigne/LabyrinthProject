@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(chrono, SIGNAL(timeout()), this, SLOT(addSecond()));
 
     glTimer = new QTimer(this);
-    connect(glTimer, SIGNAL(timeout()), this->glwidget, SLOT(paintGL()));
+    connect(glTimer, SIGNAL(timeout()), this, SLOT(manageLabyrinth()));
     glTimer->start(glTimeout);
 }
 
@@ -49,6 +49,19 @@ MainWindow::~MainWindow()
     delete timer;
     delete chrono;
     delete glTimer;
+    delete glwidget;
+}
+
+void MainWindow::manageLabyrinth()
+{
+    this->glwidget->paintGL();
+    if (this->glwidget->getLabyrinth()->terminer()){
+        // The player found the exit.
+        QMessageBox::information(this, tr("And the winner is ..."), QString::fromStdString("You won in " + std::to_string(timeElapsed) + " seconds !"));
+        // this->glwidget = new MyGLWidget();
+        delete this;
+        this->close();
+    }
 }
 
 void MainWindow::displayWebcamImage()

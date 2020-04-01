@@ -75,12 +75,4 @@ void MyGLWidget::paintGL(){
 
     labyrinthe->recuperationClef();
     labyrinthe->display();
-    finir();
-
-}
-
-void MyGLWidget::finir(){
-    if (labyrinthe->terminer()){
-        this->close();
-    }
 }

@@ -19,8 +19,9 @@ class MyGLWidget : public QOpenGLWidget
 
 public:
 
-    // Constructeur
+    // Constructeur & Destructeur
     MyGLWidget(QWidget * parent = nullptr);
+    ~MyGLWidget() {delete this;}
     // Getters & Setters
     float getCamX() {return cam_x;}
     float getCamY() {return cam_y;}
@@ -54,8 +55,6 @@ private:
     float fix_y = cam_y;
     float fix_z = cam_z;
     bool zBuffer = true;
-
-    void finir();
 
 public slots:
     // Fonction d'affichage

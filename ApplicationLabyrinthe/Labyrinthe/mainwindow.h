@@ -12,6 +12,7 @@
 #include <QMainWindow>
 #include <iostream>
 #include <QTimer>
+#include <QMessageBox>
 using namespace std;
 
 #include "webcam.h"
@@ -49,6 +50,7 @@ protected:
     void keyPressEvent(QKeyEvent * event);
 
 public slots:
+    void manageLabyrinth();
     void displayWebcamImage();
     void addSecond();
 
