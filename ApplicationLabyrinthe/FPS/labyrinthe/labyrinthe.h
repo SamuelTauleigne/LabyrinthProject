@@ -36,6 +36,8 @@ public:
     void generate();
     void ouvrirPorte() {porteOuverte = true;}
     void deplacerJoueur(float x, float y);
+    void deplacerJoueur(float pas, bool avance);
+    void pivoterJoueur(bool sensTrigo) { j1.modifierOrientation(sensTrigo);}
     void desactiverClef() {clef.desactive();}
     bool collision();
     bool terminer();

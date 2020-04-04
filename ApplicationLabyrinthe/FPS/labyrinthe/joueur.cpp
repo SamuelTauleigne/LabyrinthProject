@@ -9,24 +9,28 @@ Joueur::Joueur(float x, float y)
     sphere = gluNewQuadric();
 }
 
-void Joueur::modifierOrientation(){
-
-}
-
 void Joueur::modifierPosition(float x, float y){
     positionX = positionX + x;
     positionY = positionY + y;
 }
 
-void Joueur::modifierPosition(bool avance){
-    float deplacementX = cos(orientation);
-    float deplacementY = sin(orientation);
+void Joueur::modifierPosition(float pas, bool avance){
+    float deplacementX = pas*cos(orientation);
+    float deplacementY = pas*sin(orientation);
     if (avance){
         positionX = positionX + deplacementX;
         positionY = positionY + deplacementY;
     } else {
         positionX = positionX - deplacementX;
         positionY = positionY - deplacementY;
+    }
+}
+
+void Joueur::modifierOrientation(bool sensTrigo){
+    if (sensTrigo){
+        orientation = orientation + M_PI/6;
+    } else {
+        orientation = orientation - M_PI/6;
     }
 }
 

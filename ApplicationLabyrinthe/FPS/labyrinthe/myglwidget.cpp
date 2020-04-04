@@ -109,6 +109,75 @@ void MyGLWidget::paintGL(){
 
 }
 
+void MyGLWidget::deplacerCamera(float pas, float orientation, bool avance){
+    float deplacementX = pas*cos(orientation);
+    float deplacementY = pas*sin(orientation);
+    if (avance){
+        cam_x = cam_x + deplacementX;
+        cam_y = cam_y + deplacementY;
+        fix_x = fix_x + deplacementX;
+        fix_y = fix_y + deplacementY;
+    } else {
+        cam_x = cam_x - deplacementX;
+        cam_y = cam_y - deplacementY;
+        fix_x = fix_x - deplacementX;
+        fix_y = fix_y - deplacementY;
+    }
+}
+
+void MyGLWidget::pivoterCamera(float orientation, bool sensTrigo){
+    float deplacementX = cos(orientation);
+    float deplacementY = sin(orientation);
+    fix_x = cam_x;
+    fix_y = cam_y;
+    if (sensTrigo){
+        deplacementX = cos(orientation + M_PI/6);
+        deplacementY = sin(orientation + M_PI/6);
+        fix_x = fix_x + deplacementX;
+        fix_y = fix_y + deplacementY;
+    } else {
+        deplacementX = cos(orientation - M_PI/6);
+        deplacementY = sin(orientation - M_PI/6);
+        fix_x = fix_x + deplacementX;
+        fix_y = fix_y + deplacementY;
+    }
+}
+
+// Fonction de gestion d'interactions clavier
+void MyGLWidget::keyPressEvent(QKeyEvent * event){
+    float pas = 0.125;
+    switch (event->key()){
+        case Qt::Key_Z :
+            deplacerCamera(pas, labyrinthe->getJoueur().getOrientation(), true);
+            labyrinthe->deplacerJoueur(pas, true);
+            if (labyrinthe->collision()){
+                deplacerCamera(pas, labyrinthe->getJoueur().getOrientation(), false);
+                labyrinthe->deplacerJoueur(pas, false);
+            }
+            break;
+        case Qt::Key_S :
+            deplacerCamera(pas, labyrinthe->getJoueur().getOrientation(), false);
+            labyrinthe->deplacerJoueur(pas, false);
+            if (labyrinthe->collision()){
+                deplacerCamera(pas, labyrinthe->getJoueur().getOrientation(), true);
+                labyrinthe->deplacerJoueur(pas, true);
+            }
+            break;
+        case Qt::Key_D :
+            pivoterCamera(labyrinthe->getJoueur().getOrientation(), false);
+            labyrinthe->pivoterJoueur(false);
+            break;
+        case Qt::Key_Q :
+            pivoterCamera(labyrinthe->getJoueur().getOrientation(), true);
+            labyrinthe->pivoterJoueur(true);
+            break;
+    }
+    // Acceptation de l'événement et mise a jour de la scene
+    event->accept();
+    updateGL();
+
+}
+/*
 // Fonction de gestion d'interactions clavier
 void MyGLWidget::keyPressEvent(QKeyEvent * event){
     float pas = 0.125;
@@ -227,6 +296,7 @@ void MyGLWidget::keyPressEvent(QKeyEvent * event){
     updateGL();
 
 }
+*/
 
 void MyGLWidget::finir(){
     if (labyrinthe->terminer()){

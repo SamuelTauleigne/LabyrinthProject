@@ -24,8 +24,12 @@ bool Labyrinthe::collision(){
     return !autorise;
 }
 
-void Labyrinthe::deplacerJoueur(float x, float y) {
+void Labyrinthe::deplacerJoueur(float x, float y){
     j1.modifierPosition(x,y);
+}
+
+void Labyrinthe::deplacerJoueur(float pas, bool avance){
+    j1.modifierPosition(pas, avance);
 }
 
 bool Labyrinthe::terminer(){

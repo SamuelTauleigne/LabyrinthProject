@@ -47,6 +47,8 @@ private:
     float fix_z = cam_z;
     GLuint* texturesId;
 
+    void deplacerCamera(float pas, float orientation, bool avance);
+    void pivoterCamera(float orientation, bool sensTrigo);
     void finir();
 
 };
