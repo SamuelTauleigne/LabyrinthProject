@@ -8,10 +8,9 @@
 #include "cell.h"
 #include <vector>
 #include <utility>
-#include <QPoint>
 
 using namespace std;
-// using Point=pair<int,int>;
+using PointGraph=pair<int,int>;
 
 class Labyrinthe
 {
@@ -25,22 +24,27 @@ private:
     Joueur j1;
     bool porteOuverte = false;
 
-    void addFrontier(pair<int,int> p, list<pair<int,int>> &frontier);
-    void mark(pair<int,int> p,list<pair<int,int>> & frontier);
-    list<pair<int,int>> neighbors(pair<int,int> p);
-    Cell::Direction direction(pair<int,int> f, pair<int,int> t);
+    void addFrontier(PointGraph p,list<PointGraph> & frontier);
+    void mark(PointGraph p,list<PointGraph> & frontier);
+    list<PointGraph> neighbors(PointGraph p);
+    Cell::Direction direction(PointGraph f, PointGraph t);
 
 public:
     Labyrinthe(int width, int height);
     void recuperationClef();
+    void display(GLuint* textures);
     void display();
     void generate();
     void ouvrirPorte() {porteOuverte = true;}
     void deplacerJoueur(float x, float y);
+    void deplacerJoueur(float pas, bool avance);
+    void pivoterJoueur(bool sensTrigo) { j1.modifierOrientation(sensTrigo);}
     void desactiverClef() {clef.desactive();}
     bool collision();
     bool terminer();
 
+    int getLargeur() {return largeur;}
+    int getLongueur() {return longueur;}
     Joueur getJoueur() {return j1;}
 };
 

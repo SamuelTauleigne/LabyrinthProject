@@ -24,11 +24,12 @@ bool Labyrinthe::collision(){
     return !autorise;
 }
 
-void Labyrinthe::deplacerJoueur(float x, float y) {
+void Labyrinthe::deplacerJoueur(float x, float y){
     j1.modifierPosition(x,y);
-    if (collision()){
-        j1.modifierPosition(-x,-y);
-    }
+}
+
+void Labyrinthe::deplacerJoueur(float pas, bool avance){
+    j1.modifierPosition(pas, avance);
 }
 
 bool Labyrinthe::terminer(){
@@ -38,9 +39,10 @@ bool Labyrinthe::terminer(){
     if(!(jX>0 && jX<longueur && jY>0 && jY<largeur)){
         fin = true;
     }
+    return fin;
 }
 
-void Labyrinthe::addFrontier(pair<int,int> p,list<pair<int,int>> & frontier){
+void Labyrinthe::addFrontier(PointGraph p,list<PointGraph> & frontier){
     if (p.first>=0 && p.second>=0 && p.second<longueur && p.first<longueur
             && grid_[p.second][p.first].getValue()==0) {
         grid_[p.second][p.first].setValue(Cell::FRONTIER);
@@ -48,56 +50,93 @@ void Labyrinthe::addFrontier(pair<int,int> p,list<pair<int,int>> & frontier){
     }
 }
 
-void Labyrinthe::mark(pair<int,int> p,list<pair<int,int>> & frontier){
+void Labyrinthe::mark(PointGraph p,list<PointGraph> & frontier){
     grid_[p.second][p.first].setValue(Cell::MARKED);
-    addFrontier(pair<int,int>(p.first-1, p.second),frontier);
-    addFrontier(pair<int,int>(p.first+1, p.second),frontier);
-    addFrontier(pair<int,int>(p.first, p.second-1),frontier);
-    addFrontier(pair<int,int>(p.first, p.second+1),frontier);
+    addFrontier(PointGraph(p.first-1, p.second),frontier);
+    addFrontier(PointGraph(p.first+1, p.second),frontier);
+    addFrontier(PointGraph(p.first, p.second-1),frontier);
+    addFrontier(PointGraph(p.first, p.second+1),frontier);
 }
 
-list<pair<int,int>> Labyrinthe::neighbors(pair<int,int> p){
-    list<pair<int,int>> n;
+list<PointGraph> Labyrinthe::neighbors(PointGraph p){
+    list<PointGraph> n;
     if (p.first>0 && grid_[p.second][p.first-1].getValue()==Cell::MARKED)
-        n.push_back(pair<int,int>(p.first-1, p.second));
+        n.push_back(PointGraph(p.first-1, p.second));
     if (p.first+1<largeur && grid_[p.second][p.first+1].getValue()==Cell::MARKED)
-        n.push_back(pair<int,int>(p.first+1, p.second));
+        n.push_back(PointGraph(p.first+1, p.second));
     if (p.second>0 && grid_[p.second-1][p.first].getValue()==Cell::MARKED)
-        n.push_back(pair<int,int>(p.first, p.second-1));
+        n.push_back(PointGraph(p.first, p.second-1));
     if (p.second+1<longueur && grid_[p.second+1][p.first].getValue()==Cell::MARKED)
-        n.push_back(pair<int,int>(p.first, p.second+1));
+        n.push_back(PointGraph(p.first, p.second+1));
     return n;
 }
 
-Cell::Direction Labyrinthe::direction(pair<int,int> f, pair<int,int> t){
+Cell::Direction Labyrinthe::direction(PointGraph f, PointGraph t){
     if (f.first<t.first) return Cell::E;
     else if (f.first>t.first) return Cell::W;
     else if (f.second<t.second) return Cell::S;
     else return Cell::N;
 }
 
-void Labyrinthe::display(){
+void Labyrinthe::display(GLuint* textures){
+    glBindTexture(GL_TEXTURE_2D,textures[1]);
     glBegin(GL_QUADS);
-    glColor3ub(0, 255, 0);
+    glColor3ub(255, 255, 255);
     //sol du labyrinthe
-    glVertex3f(0.0,0.0,0.0);
-    glVertex3f(longueur,0.0,0.0);
-    glVertex3f(longueur,largeur,0.0);
-    glVertex3f(0.0,largeur,0.0);
+    glTexCoord2f(0, 0); glVertex3f(0.0,0.0,0.0);
+    glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,0.0);
+    glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,0.0);
+    glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,0.0);
+    glEnd();
     //plafond du labyrinthe
-    /*glVertex3f(0.0,0.0,2.0);
-    glVertex3f(longueur,0.0,2.0);
-    glVertex3f(longueur,largeur,2.0);
-    glVertex3f(0.0,largeur,2.0);*/
-
+    glBindTexture(GL_TEXTURE_2D,textures[2]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0, 0); glVertex3f(0.0,0.0,2.0);
+    glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,2.0);
+    glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,2.0);
+    glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,2.0);
     glEnd();
 
     j1.Display();
 
-    if (clef.getEstActive())
+    if (clef.getEstActive()){
+        glBindTexture(GL_TEXTURE_2D,textures[3]);
         clef.Display();
+    }
 
-    for (int i=0; i < (int)murs.size(); i++){
+    for (int i=0; i< murs.size(); i++){
+        if (!(porteOuverte && murs[i].getEstPorte())){
+            glBindTexture(GL_TEXTURE_2D,textures[0]);
+            murs[i].Display();
+        }
+    }
+
+}
+
+void Labyrinthe::display(){
+    glBegin(GL_QUADS);
+    glColor3ub(255, 255, 255);
+    //sol du labyrinthe
+    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(longueur,0.0,0.0);
+    glVertex3f(longueur,largeur,0.0);
+   glVertex3f(0.0,largeur,0.0);
+    glEnd();
+    //plafond du labyrinthe
+    glBegin(GL_QUADS);
+    glVertex3f(0.0,0.0,2.0);
+    glVertex3f(longueur,0.0,2.0);
+    glVertex3f(longueur,largeur,2.0);
+    glVertex3f(0.0,largeur,2.0);
+    glEnd();
+
+    j1.Display();
+
+    if (clef.getEstActive()){
+        clef.Display();
+    }
+
+    for (int i=0; i< murs.size(); i++){
         if (!(porteOuverte && murs[i].getEstPorte())){
             murs[i].Display();
         }
@@ -106,13 +145,13 @@ void Labyrinthe::display(){
 }
 
 void Labyrinthe::generate(){
-    list<pair<int,int>> frontier;
+    list<PointGraph> frontier;
 
     // Initialize random generator
     srand (time(NULL));
 
     // Mark a random cell and add the frontier cells to the list
-    mark(pair<int,int>(rand() % largeur, rand() % longueur),frontier);
+    mark(PointGraph(rand() % largeur, rand() % longueur),frontier);
 
 
     while(!frontier.empty()) {
@@ -120,14 +159,14 @@ void Labyrinthe::generate(){
         // Take a random frontier cell f (from)
         auto randPos=frontier.begin();
         advance(randPos,rand() % frontier.size());
-        pair<int,int> f=*randPos;
+        PointGraph f=*randPos;
         frontier.erase(randPos);
 
         // Take a random neighbor t (to) of that cell
-        list<pair<int,int>> n=neighbors(f);
+        list<PointGraph> n=neighbors(f);
         randPos=n.begin();
         advance(randPos,rand() % n.size());
-        pair<int,int> t=*randPos;
+        PointGraph t=*randPos;
 
         // Carve a passage from f to t
         Cell::Direction d=direction(f,t);
@@ -139,9 +178,14 @@ void Labyrinthe::generate(){
 
     }
     // ajout du joueur
-    j1.modifierPosition(rand()%longueur+0.5, rand()%largeur+0.5);
+    float jX = rand()%longueur+0.5;
+    float jY = rand()%largeur+0.5;
+    j1.modifierPosition(jX, jY);
     // ajout de la clef
     clef = Clef(rand()%longueur+0.5, rand()%largeur+0.5);
+    while (clef.getPositionX()==jX && clef.getPositionY()==jY){
+        clef = Clef(rand()%longueur+0.5, rand()%largeur+0.5);
+    }
 
     // ajout des murs extérieurs du labyrinthe
     for (int i=0;i<longueur;i++){

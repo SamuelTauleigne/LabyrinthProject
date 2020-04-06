@@ -22,6 +22,9 @@ public:
     // Constructeur & Destructeur
     MyGLWidget(QWidget * parent = nullptr);
     ~MyGLWidget() {delete this;}
+    // Deplacement de la camera
+    void deplacerCamera(float pas, float orientation, bool avance);
+    void pivoterCamera(float orientation, bool sensTrigo);
     // Getters & Setters
     float getCamX() {return cam_x;}
     float getCamY() {return cam_y;}
@@ -35,7 +38,7 @@ public:
     float setFixX(float newFixX) {fix_x = newFixX;}
     float setFixY(float newFixY) {fix_y = newFixY;}
     float setFixZ(float newFixZ) {fix_z = newFixZ;}
-    Labyrinthe* getLabyrinth() {return labyrinthe;}
+    Labyrinthe* getLabyrinthe() {return labyrinthe;}
 
 protected:
 
@@ -54,7 +57,7 @@ private:
     float fix_x = cam_x+1;
     float fix_y = cam_y;
     float fix_z = cam_z;
-    bool zBuffer = true;
+    GLuint* texturesId;
 
 public slots:
     // Fonction d'affichage

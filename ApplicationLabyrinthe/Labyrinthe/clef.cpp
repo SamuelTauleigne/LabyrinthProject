@@ -16,12 +16,11 @@ Clef::~Clef(){
 void Clef::Display() const{
 
     glPushMatrix();
-    //glLoadIdentity();
     glTranslated(positionX, positionY, 1);
-    glColor3ub(255, 0, 0); // Rouge
+    glColor3ub(255, 255, 255); // Blanc
     gluQuadricDrawStyle(sphere,GLU_FILL);
+    gluQuadricTexture(this->sphere,GL_TRUE);
     gluSphere(sphere, 0.2, 20, 20);
-    glLoadIdentity();
     glPopMatrix();
 }
 

@@ -55,7 +55,7 @@ MainWindow::~MainWindow()
 void MainWindow::manageLabyrinth()
 {
     this->glwidget->paintGL();
-    if (this->glwidget->getLabyrinth()->terminer()){
+    if (this->glwidget->getLabyrinthe()->terminer()){
         // The player found the exit.
         QMessageBox::information(this, tr("And the winner is ..."), QString::fromStdString("You won in " + std::to_string(timeElapsed) + " seconds !"));
         // this->glwidget = new MyGLWidget();
@@ -129,7 +129,41 @@ void MainWindow::on_leavePushButton_clicked()
     this->close();
 }
 
+// Fonction de gestion d'interactions clavier
+void MainWindow::keyPressEvent(QKeyEvent * event){
+    float pas = 0.125;
+    switch (event->key()){
+        case Qt::Key_Z :
+            glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+            glwidget->getLabyrinthe()->deplacerJoueur(pas, true);
+            if (glwidget->getLabyrinthe()->collision()){
+                glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+                glwidget->getLabyrinthe()->deplacerJoueur(pas, false);
+            }
+            break;
+        case Qt::Key_S :
+            glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+            glwidget->getLabyrinthe()->deplacerJoueur(pas, false);
+            if (glwidget->getLabyrinthe()->collision()){
+                glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+                glwidget->getLabyrinthe()->deplacerJoueur(pas, true);
+            }
+            break;
+        case Qt::Key_D :
+            glwidget->pivoterCamera(glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+            glwidget->getLabyrinthe()->pivoterJoueur(false);
+            break;
+        case Qt::Key_Q :
+            glwidget->pivoterCamera(glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+            glwidget->getLabyrinthe()->pivoterJoueur(true);
+            break;
+    }
+    // Acceptation de l'événement et mise a jour de la scene
+    event->accept();
+    glwidget->update();
 
+}
+/*
 // Fonction de gestion d'interactions clavier
 void MainWindow::keyPressEvent(QKeyEvent * event){
     if (isMoving)
@@ -210,8 +244,9 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
         this->glwidget->update();
     }
 }
+*/
 
 void MainWindow::moveTo(float x, float y)
 {
-    this->glwidget->getLabyrinth()->deplacerJoueur(x, y);
+    this->glwidget->getLabyrinthe()->deplacerJoueur(x, y);
 }
