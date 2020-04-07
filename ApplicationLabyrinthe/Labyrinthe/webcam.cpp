@@ -109,17 +109,17 @@ int Webcam::detectMotion()
     arrowedLine(*webcamImageRGB, *workingCenter, p, cv::Scalar(255,255,255), 2);
 
     // Swaping matrixes
-    swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
+    // swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
 
     // Detecting direction
-    // std::cout << vect.x << " " << vect.y << std::endl;
+    std::cout << vect.x << " " << vect.y << std::endl;
     return move(vect.x, vect.y);
 }
 
 int Webcam::move(int x, int y)
 {
     int thresholdH = 15;
-    int thresholdL = 0;
+    int thresholdL = 8;
     if (thresholdL < x && x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (x > y)
@@ -208,6 +208,7 @@ int Webcam::move(int x, int y)
             return -1;
         }
     }
+    return -1;
 }
 
 QImage* Webcam::getImage()

@@ -31,7 +31,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     Webcam* frontWebcam;
     QImage* frontWebcamImage;
-    int timeout = 5;
+    int timeout = 60; // 5
     int timeElapsed = 0;
     int glTimeout = 5;
     QTimer *timer;
