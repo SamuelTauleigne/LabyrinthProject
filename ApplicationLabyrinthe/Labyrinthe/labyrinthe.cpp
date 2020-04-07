@@ -78,7 +78,11 @@ Cell::Direction Labyrinthe::direction(PointGraph f, PointGraph t){
     else return Cell::N;
 }
 
-void Labyrinthe::display(GLuint* textures){
+void Labyrinthe::display(GLuint* textures, bool ouvert){
+
+    glBindTexture(GL_TEXTURE_2D,textures[4]);
+    j1.Display();
+
     glBindTexture(GL_TEXTURE_2D,textures[1]);
     glBegin(GL_QUADS);
     glColor3ub(255, 255, 255);
@@ -89,15 +93,15 @@ void Labyrinthe::display(GLuint* textures){
     glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,0.0);
     glEnd();
     //plafond du labyrinthe
-    glBindTexture(GL_TEXTURE_2D,textures[2]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex3f(0.0,0.0,2.0);
-    glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,2.0);
-    glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,2.0);
-    glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,2.0);
-    glEnd();
-
-    j1.Display();
+    if (!ouvert){
+        glBindTexture(GL_TEXTURE_2D,textures[2]);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f(0.0,0.0,2.0);
+        glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,2.0);
+        glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,2.0);
+        glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,2.0);
+        glEnd();
+    }
 
     if (clef.getEstActive()){
         glBindTexture(GL_TEXTURE_2D,textures[3]);
@@ -106,43 +110,12 @@ void Labyrinthe::display(GLuint* textures){
 
     for (int i=0; i< murs.size(); i++){
         if (!(porteOuverte && murs[i].getEstPorte())){
-            glBindTexture(GL_TEXTURE_2D,textures[0]);
-            murs[i].Display();
+            murs[i].Display(textures);
         }
     }
 
 }
 
-void Labyrinthe::display(){
-    glBegin(GL_QUADS);
-    glColor3ub(255, 255, 255);
-    //sol du labyrinthe
-    glVertex3f(0.0,0.0,0.0);
-    glVertex3f(longueur,0.0,0.0);
-    glVertex3f(longueur,largeur,0.0);
-   glVertex3f(0.0,largeur,0.0);
-    glEnd();
-    //plafond du labyrinthe
-    glBegin(GL_QUADS);
-    glVertex3f(0.0,0.0,2.0);
-    glVertex3f(longueur,0.0,2.0);
-    glVertex3f(longueur,largeur,2.0);
-    glVertex3f(0.0,largeur,2.0);
-    glEnd();
-
-    j1.Display();
-
-    if (clef.getEstActive()){
-        clef.Display();
-    }
-
-    for (int i=0; i< murs.size(); i++){
-        if (!(porteOuverte && murs[i].getEstPorte())){
-            murs[i].Display();
-        }
-    }
-
-}
 
 void Labyrinthe::generate(){
     list<PointGraph> frontier;

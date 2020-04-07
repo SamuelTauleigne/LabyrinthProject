@@ -1,4 +1,4 @@
-#include "myglwidget.h"
+#include "carteWidget.h"
 #include "labyrinthe.h"
 #include <GL/glu.h>
 #include<QApplication>
@@ -14,7 +14,7 @@ using namespace std;
 const unsigned int WIN_WIDTH  = 1600;
 const unsigned int WIN_HEIGHT = 900;
 
-MyGLWidget::MyGLWidget(QWidget *parent){
+carteWidget::carteWidget(QWidget *parent){
     // Reglage de la taille/position
     resize(WIN_WIDTH, WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
@@ -22,7 +22,7 @@ MyGLWidget::MyGLWidget(QWidget *parent){
 }
 
 // Fonction d'initialisation
-void MyGLWidget::initializeGL() {
+void carteWidget::initializeGL() {
     // Reglage de la couleur de fond
     glClearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -72,7 +72,7 @@ void MyGLWidget::initializeGL() {
 }
 
 // Fonction de redimensionnement
-void MyGLWidget::resizeGL(int width, int height){
+void carteWidget::resizeGL(int width, int height){
     // Definition du viewport (zone d'affichage)
     glViewport(0, 0, width, height);
 
@@ -80,7 +80,7 @@ void MyGLWidget::resizeGL(int width, int height){
 }
 
 // Fonction d'affichage
-void MyGLWidget::paintGL(){
+void carteWidget::paintGL(){
 
     // Reinitialisation des tampons
     glClear(GL_COLOR_BUFFER_BIT); // Effacer le buffer de couleur
@@ -91,57 +91,23 @@ void MyGLWidget::paintGL(){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    gluPerspective(80.0f, ((float)WIN_WIDTH)/WIN_HEIGHT, 0.2f, 20.0f);
+    //gluPerspective(80.0f, ((float)WIN_WIDTH)/WIN_HEIGHT, 0.2f, 20.0f);
     //glFrustum(-10, 10, -10, 10, 0.1, 4);
-    //glOrtho(-10, 10, -10, 10, 1, 20);
+    glOrtho(-10, 10, -10, 10, 1, 20);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-// /*
+/*
     gluLookAt(cam_x, cam_y, cam_z, // position de la caméra
     fix_x, fix_y, fix_z, // position du point que fixe la caméra
     0, 0, 1); // vecteur vertical
-/*
+*/ // /*
     gluLookAt(5,3,5,
               5,3,0,
               0,1,0);
-*/
+// */
     labyrinthe->recuperationClef();
-    labyrinthe->display(texturesId, false);
+    labyrinthe->display(texturesId, true);
     //finir();
 
-}
-
-void MyGLWidget::deplacerCamera(float pas, float orientation, bool avance){
-    float deplacementX = pas*cos(orientation);
-    float deplacementY = pas*sin(orientation);
-    if (avance){
-        cam_x = cam_x + deplacementX;
-        cam_y = cam_y + deplacementY;
-        fix_x = fix_x + deplacementX;
-        fix_y = fix_y + deplacementY;
-    } else {
-        cam_x = cam_x - deplacementX;
-        cam_y = cam_y - deplacementY;
-        fix_x = fix_x - deplacementX;
-        fix_y = fix_y - deplacementY;
-    }
-}
-
-void MyGLWidget::pivoterCamera(float orientation, bool sensTrigo){
-    float deplacementX = cos(orientation);
-    float deplacementY = sin(orientation);
-    fix_x = cam_x;
-    fix_y = cam_y;
-    if (sensTrigo){
-        deplacementX = cos(orientation + M_PI/6);
-        deplacementY = sin(orientation + M_PI/6);
-        fix_x = fix_x + deplacementX;
-        fix_y = fix_y + deplacementY;
-    } else {
-        deplacementX = cos(orientation - M_PI/6);
-        deplacementY = sin(orientation - M_PI/6);
-        fix_x = fix_x + deplacementX;
-        fix_y = fix_y + deplacementY;
-    }
 }

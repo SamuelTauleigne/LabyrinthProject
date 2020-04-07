@@ -17,23 +17,27 @@ Mur::~Mur(){
 
 }
 
-void Mur::Display() const{
+void Mur::Display(GLuint* textures) const{
 
     // Affichage des murs E
     if( direction == 'E'){
-        glBegin(GL_QUADS);
         glColor3ub(255, 255, 255); // Blanc
 
-        glVertex3f(positionX1-a,positionY1+a,0.0f);
-        glVertex3f(positionX1-a,positionY1-a,0.0f);
-        glVertex3f(positionX2+a,positionY2-a,0.0f);
-        glVertex3f(positionX2+a,positionY2+a,0.0f);
+        glBindTexture(GL_TEXTURE_2D,textures[2]);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,0.0f);
+        glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
+        glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2-a,0.0f);
+        glTexCoord2f(0, 1); glVertex3f(positionX2+a,positionY2+a,0.0f);
 
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,2.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,2.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2-a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
+        glEnd();
 
+        glBindTexture(GL_TEXTURE_2D,textures[0]);
+        glBegin(GL_QUADS);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX1-a,positionY1-a,2.0f);
@@ -56,9 +60,10 @@ void Mur::Display() const{
 
         glEnd();
     } else if (direction == 'S'){
-        glBegin(GL_QUADS);
         glColor3ub(255, 255, 255); // Blanc
 
+        glBindTexture(GL_TEXTURE_2D,textures[2]);
+        glBegin(GL_QUADS);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,0.0f);
@@ -68,7 +73,10 @@ void Mur::Display() const{
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,2.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2-a,positionY2+a,2.0f);
+        glEnd();
 
+        glBindTexture(GL_TEXTURE_2D,textures[0]);
+        glBegin(GL_QUADS);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX1+a,positionY1-a,2.0f);

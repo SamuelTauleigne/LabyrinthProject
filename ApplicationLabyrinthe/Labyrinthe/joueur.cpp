@@ -34,16 +34,21 @@ void Joueur::modifierOrientation(bool sensTrigo){
     }
 }
 
-void Joueur::MajCamera(){
-
-}
 
 void Joueur::Display() const{
     glPushMatrix();
     glTranslated(positionX, positionY, 1);
-    glColor3ub(255, 255, 0); // Rouge
+    glColor3ub(255, 255, 0); // Jaune
     gluQuadricDrawStyle(sphere,GLU_FILL);
     gluSphere(sphere, 0.2, 20, 20);
+    glRotated(orientation*180/M_PI,0,0,1);
+
+    glBegin(GL_QUADS);
+    glVertex3f(0-0.1,0+0.1,0.0f);
+    glVertex3f(0-0.1,0-0.1,0.0f);
+    glVertex3f(0.2+0.1,0-0.1,0.0f);
+    glVertex3f(0.2+0.1,0+0.1,0.0f);
+    glEnd();
     glPopMatrix();
 }
 

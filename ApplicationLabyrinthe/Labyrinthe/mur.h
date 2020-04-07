@@ -19,7 +19,7 @@ public:
     Mur(float x1, float y1, float x2, float y2, char d);
     virtual ~Mur();
     bool getEstPorte() {return estPorte;}
-    void Display() const;
+    void Display(GLuint* textures) const;
     void devenirPorte();
     bool collision(float x, float y, bool porteOuverte);
 };

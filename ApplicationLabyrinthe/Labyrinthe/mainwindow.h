@@ -17,6 +17,7 @@ using namespace std;
 
 #include "webcam.h"
 #include "myglwidget.h"
+#include "carteWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,6 +39,7 @@ class MainWindow : public QMainWindow
     QTimer *chrono;
     QTimer *glTimer;
     bool isMoving = false; // Tells if we should move or not.
+    carteWidget* carte = new carteWidget();
     MyGLWidget *glwidget = new MyGLWidget();
     int lastMove = -1;
     int countSameMoves = 0;

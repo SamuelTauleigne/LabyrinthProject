@@ -1,7 +1,6 @@
 #ifndef LABYRINTHE_H
 #define LABYRINTHE_H
 
-#include "carte.h"
 #include "clef.h"
 #include "joueur.h"
 #include "mur.h"
@@ -18,7 +17,6 @@ private:
     vector<vector<Cell>> grid_;
     int largeur;
     int longueur;
-    Carte carte;
     vector<Mur> murs;
     Clef clef;
     Joueur j1;
@@ -32,8 +30,7 @@ private:
 public:
     Labyrinthe(int width, int height);
     void recuperationClef();
-    void display(GLuint* textures);
-    void display();
+    void display(GLuint* textures, bool ouvert);
     void generate();
     void ouvrirPorte() {porteOuverte = true;}
     void deplacerJoueur(float x, float y);

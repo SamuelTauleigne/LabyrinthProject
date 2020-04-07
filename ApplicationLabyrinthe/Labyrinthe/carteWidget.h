@@ -1,5 +1,5 @@
-#ifndef MYGLWIDGET_H
-#define MYGLWIDGET_H
+#ifndef CARTEWIDGET_H
+#define CARTEWIDGET_H
 
 #include "labyrinthe.h"
 #include <QGLWidget>
@@ -13,18 +13,15 @@
 using namespace std;
 
 // Classe dediee a l'affichage d'une scene OpenGL
-class MyGLWidget : public QOpenGLWidget
+class carteWidget : public QOpenGLWidget
 {
     Q_OBJECT
 
 public:
 
     // Constructeur & Destructeur
-    MyGLWidget(QWidget * parent = nullptr);
-    ~MyGLWidget() {delete this;}
-    // Deplacement de la camera
-    void deplacerCamera(float pas, float orientation, bool avance);
-    void pivoterCamera(float orientation, bool sensTrigo);
+    carteWidget(QWidget * parent = nullptr);
+    ~carteWidget() {delete this;}
     // Getters & Setters
     float getCamX() {return cam_x;}
     float getCamY() {return cam_y;}
@@ -32,13 +29,14 @@ public:
     float getFixX() {return fix_x;}
     float getFixY() {return fix_y;}
     float getFixZ() {return fix_z;}
-    float setCamX(float newCamX) {cam_x = newCamX;}
-    float setCamY(float newCamY) {cam_y = newCamY;}
-    float setCamZ(float newCamZ) {cam_z = newCamZ;}
-    float setFixX(float newFixX) {fix_x = newFixX;}
-    float setFixY(float newFixY) {fix_y = newFixY;}
-    float setFixZ(float newFixZ) {fix_z = newFixZ;}
     Labyrinthe* getLabyrinthe() {return labyrinthe;}
+    void setCamX(float newCamX) {cam_x = newCamX;}
+    void setCamY(float newCamY) {cam_y = newCamY;}
+    void setCamZ(float newCamZ) {cam_z = newCamZ;}
+    void setFixX(float newFixX) {fix_x = newFixX;}
+    void setFixY(float newFixY) {fix_y = newFixY;}
+    void setFixZ(float newFixZ) {fix_z = newFixZ;}
+    void setLabyrinthe(Labyrinthe* lab) {labyrinthe = lab;}
 
 protected:
 
@@ -64,4 +62,4 @@ public slots:
 
 };
 
-#endif // MYGLWIDGET_H
+#endif // CARTEWIDGET_H

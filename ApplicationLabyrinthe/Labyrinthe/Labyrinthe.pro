@@ -30,7 +30,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    carte.cpp \
+    carteWidget.cpp \
     clef.cpp \
     joueur.cpp \
     labyrinthe.cpp \
@@ -41,7 +41,7 @@ SOURCES += \
     webcam.cpp
 
 HEADERS += \
-    carte.h \
+    carteWidget.h \
     cell.h \
     clef.h \
     joueur.h \
@@ -59,11 +59,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH +=$$(OPENCV_DIR)\include # Samuel
-#INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include # Jocelyn
+#INCLUDEPATH +=$$(OPENCV_DIR)\include # Samuel
+INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include # Jocelyn
 
-#LIBS += -L$$(OPENCV_DIR)\lib \ # Jocelyn
-LIBS += -L$$(OPENCV_DIR)\x64\mingw\lib \ #Samuel
+LIBS += -L$$(OPENCV_DIR)\lib \ # Jocelyn
+#LIBS += -L$$(OPENCV_DIR)\x64\mingw\lib \ #Samuel
     -lopencv_core420 \
     -lopencv_highgui420 \
     -lopencv_imgproc420 \

@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->gridLayout->addWidget(glwidget);
 
+    ui->gridLayout_4->addWidget(carte);
+
     // Creating a new Webcam Object
     frontWebcam = new Webcam();
 
@@ -47,6 +49,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::manageLabyrinth()
 {
+    this->carte->setLabyrinthe(this->glwidget->getLabyrinthe());
+    this->carte->paintGL();
     this->glwidget->paintGL();
     if (this->glwidget->getLabyrinthe()->terminer()){
         // The player found the exit.
@@ -155,6 +159,7 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
     // Acceptation de l'événement et mise a jour de la scene
     event->accept();
     glwidget->update();
+    carte->update();
 
 }
 
