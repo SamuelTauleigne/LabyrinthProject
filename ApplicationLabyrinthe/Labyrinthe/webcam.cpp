@@ -85,7 +85,7 @@ void Webcam::detectFaces()
     }
 }
 
-void Webcam::detectMotion()
+int Webcam::detectMotion()
 {
     cv::Mat frameRect;
 
@@ -108,63 +108,105 @@ void Webcam::detectMotion()
     cv::Point p(workingCenter->x+vect.x,workingCenter->y+vect.y);
     arrowedLine(*webcamImageRGB, *workingCenter, p, cv::Scalar(255,255,255), 2);
 
-    // Detecting direction
-    // std::cout << vect.x << " " << vect.y << std::endl;
-    move(vect.x, vect.y);
-
     // Swaping matrixes
     swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
+
+    // Detecting direction
+    // std::cout << vect.x << " " << vect.y << std::endl;
+    return move(vect.x, vect.y);
 }
 
-void Webcam::move(int x, int y)
+int Webcam::move(int x, int y)
 {
     int thresholdH = 15;
     int thresholdL = 0;
     if (thresholdL < x && x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (x > y)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
     }
     else if (thresholdL < x && x < thresholdH && thresholdL < -y && -y < thresholdH)
     {
         if (x > -y)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
     }
     else if (thresholdL < -x && -x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (-x > y)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
     }
     else if (thresholdL < -x && -x < thresholdH && thresholdL < -y && -y < thresholdH)
     {
         if (x < y)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
     }
     else if (-thresholdL <= x && x <= thresholdL)
     {
         if (y > thresholdL)
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
         else if (y < -thresholdL)
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
         else
+        {
             std::cout << "Neutre" << std::endl;
+            return -1;
+        }
     }
     else if (-thresholdL <= y && y <= thresholdL)
     {
         if (x > thresholdL)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else if (x < -thresholdL)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Neutre" << std::endl;
+            return -1;
+        }
     }
 }
 

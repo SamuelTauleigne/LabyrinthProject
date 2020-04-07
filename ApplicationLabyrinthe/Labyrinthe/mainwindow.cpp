@@ -12,13 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->gridLayout->addWidget(glwidget);
 
-    // Labyrinthe 3D
-    // MyGLWidget* labyrinth3D = new MyGLWidget();
-    // ui->openGLWidget = labyrinth3D;
-    // ui->openGLWidget->setLayout(labyrinth3D->layout());
-    // labyrinth3D->show();
-    // ui->openGLWidget->show();
-
     // Creating a new Webcam Object
     frontWebcam = new Webcam();
 
@@ -74,7 +67,8 @@ void MainWindow::displayWebcamImage()
         // Detecting faces on the image
         frontWebcam->detectFaces();
         // Detecting motion
-        frontWebcam->detectMotion();
+        int moveToDo = frontWebcam->detectMotion();
+        processMove(moveToDo);
     }
     // Getting this new image
     frontWebcamImage = frontWebcam->getImage();
@@ -163,6 +157,7 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
     glwidget->update();
 
 }
+
 /*
 // Fonction de gestion d'interactions clavier
 void MainWindow::keyPressEvent(QKeyEvent * event){
@@ -245,8 +240,69 @@ void MainWindow::keyPressEvent(QKeyEvent * event){
     }
 }
 */
-
+/*
 void MainWindow::moveTo(float x, float y)
 {
     this->glwidget->getLabyrinthe()->deplacerJoueur(x, y);
+}
+*/
+
+void MainWindow::moveTo(int moveToDo)
+{
+    float pas = 0.125;
+    switch (moveToDo){
+        case 1:
+            glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+            glwidget->getLabyrinthe()->deplacerJoueur(pas, true);
+            if (glwidget->getLabyrinthe()->collision()){
+                glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+                glwidget->getLabyrinthe()->deplacerJoueur(pas, false);
+            }
+            break;
+        case 3 :
+            glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+            glwidget->getLabyrinthe()->deplacerJoueur(pas, false);
+            if (glwidget->getLabyrinthe()->collision()){
+                glwidget->deplacerCamera(pas, glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+                glwidget->getLabyrinthe()->deplacerJoueur(pas, true);
+            }
+            break;
+        case 0 :
+            glwidget->pivoterCamera(glwidget->getLabyrinthe()->getJoueur().getOrientation(), false);
+            glwidget->getLabyrinthe()->pivoterJoueur(false);
+            break;
+        case 2 :
+            glwidget->pivoterCamera(glwidget->getLabyrinthe()->getJoueur().getOrientation(), true);
+            glwidget->getLabyrinthe()->pivoterJoueur(true);
+            break;
+    }
+    glwidget->update();
+}
+
+void MainWindow::processMove(int moveToDo)
+{
+    if (lastMove == moveToDo)
+    {
+        countSameMoves++;
+    }
+    else
+    {
+        countSameMoves = 0;
+    }
+    if (countSameMoves == 2)
+    {
+        if (lastMoveDone == -1)
+        {
+            moveTo(moveToDo);
+            lastMoveDone = moveToDo;
+        }
+        else
+        {
+            if (moveToDo == -1)
+            {
+                lastMoveDone = -1;
+            }
+        }
+    }
+    lastMove = moveToDo;
 }

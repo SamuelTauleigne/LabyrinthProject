@@ -39,12 +39,17 @@ class MainWindow : public QMainWindow
     QTimer *glTimer;
     bool isMoving = false; // Tells if we should move or not.
     MyGLWidget *glwidget = new MyGLWidget();
+    int lastMove = -1;
+    int countSameMoves = 0;
+    int lastMoveDone = -1;
 
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void haveToMove(bool movingOrNotMoving) {isMoving = movingOrNotMoving;}
-    void moveTo(float x, float y);
+    // void moveTo(float x, float y);
+    void moveTo(int moveToDo);
+    void processMove(int moveToDo);
 
 protected:
     void keyPressEvent(QKeyEvent * event);
