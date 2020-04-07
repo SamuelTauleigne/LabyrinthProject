@@ -72,7 +72,8 @@ void MainWindow::displayWebcamImage()
         frontWebcam->detectFaces();
         // Detecting motion
         int moveToDo = frontWebcam->detectMotion();
-        processMove(moveToDo);
+        moveTo(moveToDo);
+        // processMove(moveToDo);
     }
     // Getting this new image
     frontWebcamImage = frontWebcam->getImage();
@@ -294,9 +295,9 @@ void MainWindow::processMove(int moveToDo)
     {
         countSameMoves = 0;
     }
-    if (countSameMoves == 2)
+    if (countSameMoves >= 2)
     {
-        if (lastMoveDone == -1)
+        if (lastMoveDone == -1 || lastMoveDone == moveToDo) // Comment second part
         {
             moveTo(moveToDo);
             lastMoveDone = moveToDo;
