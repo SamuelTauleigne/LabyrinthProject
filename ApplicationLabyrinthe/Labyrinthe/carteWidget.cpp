@@ -91,9 +91,9 @@ void carteWidget::paintGL(){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    //gluPerspective(80.0f, ((float)WIN_WIDTH)/WIN_HEIGHT, 0.2f, 20.0f);
-    //glFrustum(-10, 10, -10, 10, 0.1, 4);
-    glOrtho(-10, 10, -10, 10, 1, 20);
+    float largeur = labyrinthe->getLargeur();
+    float longueur = labyrinthe->getLongueur();
+    glOrtho(-(1+longueur/2), (1+longueur/2), -(1+largeur/2), (1+largeur/2), 1, 20);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -102,8 +102,8 @@ void carteWidget::paintGL(){
     fix_x, fix_y, fix_z, // position du point que fixe la caméra
     0, 0, 1); // vecteur vertical
 */ // /*
-    gluLookAt(5,3,5,
-              5,3,0,
+    gluLookAt(longueur/2,largeur/2,5,
+              longueur/2,largeur/2,0,
               0,1,0);
 // */
     labyrinthe->recuperationClef();
