@@ -145,3 +145,11 @@ void MyGLWidget::pivoterCamera(float orientation, bool sensTrigo){
         fix_y = fix_y + deplacementY;
     }
 }
+
+void MyGLWidget::genererLabyrinthe(){
+    labyrinthe->generate();
+    cam_x = labyrinthe->getJoueur().getPositionX();
+    cam_y = labyrinthe->getJoueur().getPositionY();
+    fix_x = cam_x+1;
+    fix_y = cam_y;
+}

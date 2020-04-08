@@ -57,8 +57,8 @@ void MainWindow::manageLabyrinth()
         // The player found the exit.
         QMessageBox::information(this, tr("And the winner is ..."), QString::fromStdString("You won in " + std::to_string(timeElapsed) + " seconds !"));
         // this->glwidget = new MyGLWidget();
-        delete this;
         this->close();
+        delete this;
     }
 }
 
@@ -128,6 +128,16 @@ void MainWindow::on_leavePushButton_clicked()
 {
     this->close();
 }
+
+void MainWindow::on_setSizePushButton_clicked()
+{
+    glwidget->setLabyrinthe(new Labyrinthe(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt()));
+    glwidget->genererLabyrinthe();
+    carte->setLabyrinthe(glwidget->getLabyrinthe());
+    glwidget->update();
+    carte->update();
+}
+
 
 // Fonction de gestion d'interactions clavier
 void MainWindow::keyPressEvent(QKeyEvent * event){

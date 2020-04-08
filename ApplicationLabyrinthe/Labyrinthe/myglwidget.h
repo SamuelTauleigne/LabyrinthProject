@@ -25,6 +25,7 @@ public:
     // Deplacement de la camera
     void deplacerCamera(float pas, float orientation, bool avance);
     void pivoterCamera(float orientation, bool sensTrigo);
+    void genererLabyrinthe();
     // Getters & Setters
     float getCamX() {return cam_x;}
     float getCamY() {return cam_y;}
@@ -32,13 +33,14 @@ public:
     float getFixX() {return fix_x;}
     float getFixY() {return fix_y;}
     float getFixZ() {return fix_z;}
-    float setCamX(float newCamX) {cam_x = newCamX;}
-    float setCamY(float newCamY) {cam_y = newCamY;}
-    float setCamZ(float newCamZ) {cam_z = newCamZ;}
-    float setFixX(float newFixX) {fix_x = newFixX;}
-    float setFixY(float newFixY) {fix_y = newFixY;}
-    float setFixZ(float newFixZ) {fix_z = newFixZ;}
     Labyrinthe* getLabyrinthe() {return labyrinthe;}
+    void setCamX(float newCamX) {cam_x = newCamX;}
+    void setCamY(float newCamY) {cam_y = newCamY;}
+    void setCamZ(float newCamZ) {cam_z = newCamZ;}
+    void setFixX(float newFixX) {fix_x = newFixX;}
+    void setFixY(float newFixY) {fix_y = newFixY;}
+    void setFixZ(float newFixZ) {fix_z = newFixZ;}
+    void setLabyrinthe(Labyrinthe* lab) {labyrinthe = lab;}
 
 protected:
 
