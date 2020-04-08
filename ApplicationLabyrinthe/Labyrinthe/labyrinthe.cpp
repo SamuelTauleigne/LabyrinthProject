@@ -103,7 +103,7 @@ void Labyrinthe::display(GLuint* textures, bool ouvert){
         glEnd();
     }
 
-    if (clef.getEstActive()){
+    if (clef.getEstActive() && !ouvert){
         glBindTexture(GL_TEXTURE_2D,textures[3]);
         clef.Display();
     }
