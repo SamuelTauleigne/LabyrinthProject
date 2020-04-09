@@ -109,6 +109,8 @@ void MainWindow::on_startPushButton_clicked()
 {
     this->chrono->start(1000);
     this->haveToMove(true);
+    // Initializing motion Detection
+    this->frontWebcam->initializeMotionDetection();
 }
 
 void MainWindow::on_resetPushButton_clicked()

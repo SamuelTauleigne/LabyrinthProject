@@ -7,9 +7,6 @@ Webcam::Webcam()
     webcam->set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
     webcam->set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
 
-    // Initializing motion Detection
-    initializeMotionDetection();
-
 }
 
 Webcam::~Webcam()
