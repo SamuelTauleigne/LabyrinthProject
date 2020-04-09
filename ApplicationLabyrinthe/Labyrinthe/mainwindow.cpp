@@ -45,6 +45,7 @@ MainWindow::~MainWindow()
     delete timer;
     delete chrono;
     delete glTimer;
+    delete carte;
     delete glwidget;
 }
 

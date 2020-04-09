@@ -38,9 +38,10 @@ void carteWidget::initializeGL() {
     QImage solImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/sol.jpg"));
     QImage clefImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/TSE.png"));
     QImage plafondImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/plafond1.png"));
+    QImage blancImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/blanc.jpg"));
 
-    texturesId = new GLuint[4];
-    glGenTextures(11,texturesId);
+    texturesId = new GLuint[5];
+    glGenTextures(5,texturesId);
 
     glBindTexture(GL_TEXTURE_2D,texturesId[0]);
     glTexImage2D(GL_TEXTURE_2D,0, 4,murImg.width(),murImg.height(),0,GL_RGBA, GL_UNSIGNED_BYTE, murImg.bits());
@@ -62,6 +63,10 @@ void carteWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    glBindTexture(GL_TEXTURE_2D,texturesId[4]);
+    glTexImage2D(GL_TEXTURE_2D,0, 4,blancImg.width(),blancImg.height(),0,GL_RGBA, GL_UNSIGNED_BYTE, blancImg.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     labyrinthe->generate();
 
