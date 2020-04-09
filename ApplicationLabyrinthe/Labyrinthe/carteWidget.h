@@ -1,4 +1,4 @@
-#ifndef CARTEWIDGET_H
+    #ifndef CARTEWIDGET_H
 #define CARTEWIDGET_H
 
 #include "labyrinthe.h"
@@ -16,6 +16,9 @@ using namespace std;
 class carteWidget : public QOpenGLWidget
 {
     Q_OBJECT
+    // Declarations des constantes
+    const unsigned int WIN_WIDTH  = 1600;
+    const unsigned int WIN_HEIGHT = 900;
 
 public:
 
@@ -23,6 +26,8 @@ public:
     carteWidget(QWidget * parent = nullptr);
     ~carteWidget() {delete this;}
     // Getters & Setters
+    unsigned int getWidth() {return WIN_WIDTH;}
+    unsigned int getHeight() {return WIN_HEIGHT;}
     float getCamX() {return cam_x;}
     float getCamY() {return cam_y;}
     float getCamZ() {return cam_z;}

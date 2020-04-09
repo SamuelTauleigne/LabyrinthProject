@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->gridLayout->addWidget(glwidget);
 
     ui->gridLayout_4->addWidget(carte);
-    //carte->hide();
 
     // Creating a new Webcam Object
     frontWebcam = new Webcam();
@@ -76,6 +75,16 @@ void MainWindow::displayWebcamImage()
         int moveToDo = frontWebcam->detectMotion();
         moveTo(moveToDo);
         // processMove(moveToDo);
+
+        if (moveToDo == -1)
+        {
+            carte->setFixedWidth(245);
+        }
+        else
+        {
+            carte->setFixedWidth(25);
+        }
+
     }
     // Getting this new image
     frontWebcamImage = frontWebcam->getImage();

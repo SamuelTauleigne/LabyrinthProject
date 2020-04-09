@@ -10,9 +10,7 @@
 using namespace std;
 
 
-// Declarations des constantes
-const unsigned int WIN_WIDTH  = 1600;
-const unsigned int WIN_HEIGHT = 900;
+
 
 carteWidget::carteWidget(QWidget *parent){
     // Reglage de la taille/position
