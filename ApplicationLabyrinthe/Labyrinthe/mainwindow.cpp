@@ -118,6 +118,11 @@ void MainWindow::on_resetPushButton_clicked()
     timeElapsed = 0;
     ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
     this->frontWebcam->initializeMotionDetection();
+    glwidget->setLabyrinthe(new Labyrinthe(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt()));
+    glwidget->genererLabyrinthe();
+    carte->setLabyrinthe(glwidget->getLabyrinthe());
+    glwidget->update();
+    carte->update();
 }
 
 void MainWindow::on_pausePushButton_clicked()
