@@ -117,6 +117,7 @@ void MainWindow::on_resetPushButton_clicked()
     this->haveToMove(false);
     timeElapsed = 0;
     ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
+    this->frontWebcam->initializeMotionDetection();
 }
 
 void MainWindow::on_pausePushButton_clicked()

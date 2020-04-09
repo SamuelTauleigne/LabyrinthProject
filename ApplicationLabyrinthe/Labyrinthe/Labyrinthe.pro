@@ -59,11 +59,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-#INCLUDEPATH +=$$(OPENCV_DIR)\include # Samuel
-INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include # Jocelyn
+INCLUDEPATH +=$$(OPENCV_DIR)\include # Samuel
+#INCLUDEPATH +=$$(OPENCV_DIR)\..\..\include # Jocelyn
 
-LIBS += -L$$(OPENCV_DIR)\lib \ # Jocelyn
-#LIBS += -L$$(OPENCV_DIR)\x64\mingw\lib \ #Samuel
+#LIBS += -L$$(OPENCV_DIR)\lib \ # Jocelyn
+LIBS += -L$$(OPENCV_DIR)\x64\mingw\lib \ #Samuel
     -lopencv_core420 \
     -lopencv_highgui420 \
     -lopencv_imgproc420 \
