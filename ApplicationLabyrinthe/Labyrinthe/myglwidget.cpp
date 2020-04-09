@@ -31,7 +31,15 @@ void MyGLWidget::initializeGL() {
     glEnable(GL_TEXTURE_2D);
 
     // Activation de l'éclairage
-    //glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHTING);
+
+    glEnable(GL_LIGHT0);
+    GLfloat ambiantColor[] =  {0.5,0.5,0.5,1.0};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambiantColor);
+    GLfloat diffuseColor[] =  {1.0,1.0,0.0,1.0};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColor);
+    GLfloat positionLight[] =  {0.0,0.0,0.5,0.0};
+    glLightfv(GL_LIGHT0, GL_POSITION, positionLight);
 
     // Ajout des textures
     QImage murImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/mur2.jpg"));

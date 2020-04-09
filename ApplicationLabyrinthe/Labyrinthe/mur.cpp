@@ -22,14 +22,21 @@ void Mur::Display(GLuint* textures) const{
     // Affichage des murs E
     if( direction == 'E'){
         glColor3ub(255, 255, 255); // Blanc
+        GLfloat reflet[] = {double(255)/255,double(255)/255,double(255)/255,1.0};
+        GLfloat pasReflet[] = {0.0,0.0,0.0,1.0};
+        glMaterialfv(GL_FRONT, GL_AMBIENT, reflet);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, reflet);
+        glMaterialfv(GL_FRONT, GL_EMISSION, pasReflet );
 
         glBindTexture(GL_TEXTURE_2D,textures[2]);
         glBegin(GL_QUADS);
+        glNormal3f(0.0, 0.0, 1.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2-a,0.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2+a,positionY2+a,0.0f);
 
+        glNormal3f(0.0, 0.0, 1.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,2.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,2.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2-a,2.0f);
@@ -38,21 +45,25 @@ void Mur::Display(GLuint* textures) const{
 
         glBindTexture(GL_TEXTURE_2D,textures[0]);
         glBegin(GL_QUADS);
+        glNormal3f(1.0, 0.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX1-a,positionY1-a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX1-a,positionY1+a,2.0f);
 
+        glNormal3f(-1.0, 0.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX2+a,positionY2-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2+a,positionY2+a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2+a,positionY2-a,2.0f);
 
+        glNormal3f(0.0, -1.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2+a,positionY2-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2-a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX1-a,positionY1-a,2.0f);
 
+        glNormal3f(0.0, 1.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1+a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2+a,positionY2+a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
@@ -64,11 +75,13 @@ void Mur::Display(GLuint* textures) const{
 
         glBindTexture(GL_TEXTURE_2D,textures[2]);
         glBegin(GL_QUADS);
+        glNormal3f(0.0, 0.0, 1.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,0.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2-a,positionY2+a,0.0f);
 
+        glNormal3f(0.0, 0.0, 1.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,2.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,2.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
@@ -77,21 +90,25 @@ void Mur::Display(GLuint* textures) const{
 
         glBindTexture(GL_TEXTURE_2D,textures[0]);
         glBegin(GL_QUADS);
+        glNormal3f(0.0, -1.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX1+a,positionY1-a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX1+a,positionY1-a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX1-a,positionY1-a,2.0f);
 
+        glNormal3f(0.0, 1.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX2+a,positionY2+a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2-a,positionY2+a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2-a,positionY2+a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);
 
+        glNormal3f(-1.0, 0.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1-a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2-a,positionY2+a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2-a,positionY2+a,2.0f);
         glTexCoord2f(0, 1); glVertex3f(positionX1-a,positionY1-a,2.0f);
 
+        glNormal3f(1.0, 0.0, 0.0);
         glTexCoord2f(0, 0); glVertex3f(positionX1+a,positionY1-a,0.0f);
         glTexCoord2f(1, 0); glVertex3f(positionX2+a,positionY2+a,0.0f);
         glTexCoord2f(1, 1); glVertex3f(positionX2+a,positionY2+a,2.0f);

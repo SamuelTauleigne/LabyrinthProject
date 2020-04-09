@@ -18,6 +18,10 @@ void Clef::Display() const{
     glPushMatrix();
     glTranslated(positionX, positionY, 1);
     glColor3ub(255, 255, 255); // Blanc
+    GLfloat reflet[] = {1.0,1.0,1.0,1.0};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, reflet);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, reflet);
+    glMaterialfv(GL_FRONT, GL_EMISSION, reflet );
     gluQuadricDrawStyle(sphere,GLU_FILL);
     gluQuadricTexture(this->sphere,GL_TRUE);
     gluSphere(sphere, 0.2, 20, 20);
