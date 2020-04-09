@@ -57,9 +57,9 @@ void MainWindow::manageLabyrinth()
     if (this->glwidget->getLabyrinthe()->terminer()){
         // The player found the exit.
         QMessageBox::information(this, tr("And the winner is ..."), QString::fromStdString("You won in " + std::to_string(timeElapsed) + " seconds !"));
-        // this->glwidget = new MyGLWidget();
-        this->close();
-        delete this;
+
+        on_resetPushButton_clicked();
+
     }
 }
 
