@@ -12,7 +12,6 @@
 #include <QWidget>
 #include <QLabel>
 #include "opencv2/opencv.hpp"
-using namespace cv;
 
 
 class Webcam
@@ -23,19 +22,19 @@ class Webcam
     int subImageHeight=100;
     int templateWidth=25;
     int templateHeight=25;
-    Rect* workingRect = new Rect((frameWidth-subImageWidth)/2,frameHeight/2-subImageHeight/2,subImageWidth,subImageHeight);
-    Rect* templateRect = new Rect((workingRect->width-templateWidth)/2,(workingRect->height-templateHeight)/2,templateWidth,templateHeight);
-    Point* workingCenter = new Point(workingRect->x+subImageWidth/2,workingRect->y+subImageHeight/2);
-    Mat* initialFrame = new Mat();
-    Mat* initialFrameRect = new Mat();
-    Mat* resultMatchTemplateImage = new Mat();
+    cv::Rect* workingRect = new cv::Rect((frameWidth-subImageWidth)/2,frameHeight/2-subImageHeight/2,subImageWidth,subImageHeight);
+    cv::Rect* templateRect = new cv::Rect((workingRect->width-templateWidth)/2,(workingRect->height-templateHeight)/2,templateWidth,templateHeight);
+    cv::Point* workingCenter = new cv::Point(workingRect->x+subImageWidth/2,workingRect->y+subImageHeight/2);
+    cv::Mat* initialFrame = new cv::Mat();
+    cv::Mat* initialFrameRect = new cv::Mat();
+    cv::Mat* resultMatchTemplateImage = new cv::Mat();
 
-    VideoCapture* webcam;
-    Mat* webcamImage = new Mat();
-    Mat* webcamImageRGB = new Mat();
-    Mat* grayWebcamImage = new Mat();
+    cv::VideoCapture* webcam;
+    cv::Mat* webcamImage = new cv::Mat();
+    cv::Mat* webcamImageRGB = new cv::Mat();
+    cv::Mat* grayWebcamImage = new cv::Mat();
     QImage* img = new QImage();
-    CascadeClassifier* faceCascadeClassifier = new CascadeClassifier();
+    cv::CascadeClassifier* faceCascadeClassifier = new cv::CascadeClassifier();
 
 public:
     Webcam();
@@ -43,8 +42,8 @@ public:
     void initializeMotionDetection();
     void updateImage();
     void detectFaces();
-    void detectMotion();
-    void move(int x, int y); // Today, this method only display the direction but it will be used to move the player.
+    int detectMotion();
+    int move(int x, int y);
     QImage* getImage();
 };
 

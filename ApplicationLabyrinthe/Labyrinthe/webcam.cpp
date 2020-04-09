@@ -3,12 +3,9 @@
 Webcam::Webcam()
 {
     // Setting a new camera object
-    webcam = new VideoCapture(0);
-    webcam->set(CAP_PROP_FRAME_WIDTH, frameWidth);
-    webcam->set(CAP_PROP_FRAME_HEIGHT, frameHeight);
-
-    // Initializing motion Detection
-    initializeMotionDetection();
+    webcam = new cv::VideoCapture(0);
+    webcam->set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
+    webcam->set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
 
 }
 
@@ -29,7 +26,7 @@ void Webcam::initializeMotionDetection()
         // Getting initialFrame
         *webcam >> *initialFrame;
         cv::flip(*initialFrame, *initialFrame, 1);
-        cv::cvtColor(Mat(*initialFrame, *workingRect), *initialFrameRect, COLOR_BGR2GRAY);
+        cv::cvtColor(cv::Mat(*initialFrame, *workingRect), *initialFrameRect, cv::COLOR_BGR2GRAY);
         // imshow("Initial Frame", *initialFrame);
 
         // Creating the resultMatchTemplateImage image result
@@ -53,7 +50,7 @@ void Webcam::updateImage()
         // Flipping the image to counter the mirror effect
         flip(*webcamImage, *webcamImage, 1);
         // Inverting Blue and Red color channels
-        cvtColor(*webcamImage, *webcamImageRGB, COLOR_BGR2RGB);
+        cvtColor(*webcamImage, *webcamImageRGB, cv::COLOR_BGR2RGB);
     }
     else
     {
@@ -65,18 +62,18 @@ void Webcam::detectFaces()
 {
     if (faceCascadeClassifier->load( "..\\Labyrinthe\\haarcascade_frontalface_alt.xml"))
     {
-        std::vector<Rect> faces;
+        std::vector<cv::Rect> faces;
         // Converting to gray
-        cv::cvtColor(*webcamImage, *grayWebcamImage, COLOR_BGR2GRAY);
+        cv::cvtColor(*webcamImage, *grayWebcamImage, cv::COLOR_BGR2GRAY);
         // Equalizing graylevels
         equalizeHist(*grayWebcamImage, *grayWebcamImage);
         // Detecting faces
-        faceCascadeClassifier->detectMultiScale(*grayWebcamImage, faces, 1.1, 4, 0, Size(60, 60));
+        faceCascadeClassifier->detectMultiScale(*grayWebcamImage, faces, 1.1, 4, 0, cv::Size(60, 60));
         if (faces.size()>0)
         {
             // Drawing green rectangle
             for (int i=0;i<(int)faces.size();i++)
-                rectangle(*webcamImageRGB, faces[i], Scalar(0,255,0),2);
+                rectangle(*webcamImageRGB, faces[i], cv::Scalar(0,255,0),2);
         }
     }
     else
@@ -85,87 +82,130 @@ void Webcam::detectFaces()
     }
 }
 
-void Webcam::detectMotion()
+int Webcam::detectMotion()
 {
-    Mat frameRect;
+    cv::Mat frameRect;
 
     // Extracting working rect in webcamImage and converting it to gray
-    cv::cvtColor(Mat(*webcamImage, *workingRect), frameRect, COLOR_BGR2GRAY);
+    cv::cvtColor(cv::Mat(*webcamImage, *workingRect), frameRect, cv::COLOR_BGR2GRAY);
 
     // Extracting template image in initialFrame
-    Mat templateImage(*initialFrameRect, *templateRect);
+    cv::Mat templateImage(*initialFrameRect, *templateRect);
 
     // Matching between the working rect and the templateImage in initialFrame
-    matchTemplate(frameRect, templateImage, *resultMatchTemplateImage, TM_CCORR_NORMED);
+    matchTemplate(frameRect, templateImage, *resultMatchTemplateImage, cv::TM_CCORR_NORMED);
     // Localizing the best match with minMaxLoc
-    double minVal; double maxVal; Point minLoc; Point maxLoc;
+    double minVal; double maxVal; cv::Point minLoc; cv::Point maxLoc;
     minMaxLoc(*resultMatchTemplateImage, &minVal, &maxVal, &minLoc, &maxLoc);
     // Computing the translation vector between the origin and the matching rect
-    Point vect(maxLoc.x-templateRect->x,maxLoc.y-templateRect->y);
+    cv::Point vect(maxLoc.x-templateRect->x,maxLoc.y-templateRect->y);
 
     // Drawing green rectangle and the translation vector
-    rectangle(*webcamImageRGB, *workingRect, Scalar( 0, 255, 0), 2);
-    Point p(workingCenter->x+vect.x,workingCenter->y+vect.y);
-    arrowedLine(*webcamImageRGB, *workingCenter, p, Scalar(255,255,255), 2);
-
-    // Detecting direction
-    // std::cout << vect.x << " " << vect.y << std::endl;
-    move(vect.x, vect.y);
+    rectangle(*webcamImageRGB, *workingRect, cv::Scalar( 0, 255, 0), 2);
+    cv::Point p(workingCenter->x+vect.x,workingCenter->y+vect.y);
+    arrowedLine(*webcamImageRGB, *workingCenter, p, cv::Scalar(255,255,255), 2);
 
     // Swaping matrixes
-    swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
+    // swap(*initialFrameRect, frameRect); // Commenter pour avoir deux modes de contrôle
+
+    // Detecting direction
+    std::cout << vect.x << " " << vect.y << std::endl;
+    return move(vect.x, vect.y);
 }
 
-void Webcam::move(int x, int y)
+int Webcam::move(int x, int y)
 {
     int thresholdH = 15;
-    int thresholdL = 0;
+    int thresholdL = 8;
     if (thresholdL < x && x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (x > y)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
     }
     else if (thresholdL < x && x < thresholdH && thresholdL < -y && -y < thresholdH)
     {
         if (x > -y)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
     }
     else if (thresholdL < -x && -x < thresholdH && thresholdL < y && y < thresholdH)
     {
         if (-x > y)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
     }
     else if (thresholdL < -x && -x < thresholdH && thresholdL < -y && -y < thresholdH)
     {
         if (x < y)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
     }
     else if (-thresholdL <= x && x <= thresholdL)
     {
         if (y > thresholdL)
+        {
             std::cout << "Bas" << std::endl;
+            return 3;
+        }
         else if (y < -thresholdL)
+        {
             std::cout << "Haut" << std::endl;
+            return 1;
+        }
         else
+        {
             std::cout << "Neutre" << std::endl;
+            return -1;
+        }
     }
     else if (-thresholdL <= y && y <= thresholdL)
     {
         if (x > thresholdL)
+        {
             std::cout << "Droite" << std::endl;
+            return 0;
+        }
         else if (x < -thresholdL)
+        {
             std::cout << "Gauche" << std::endl;
+            return 2;
+        }
         else
+        {
             std::cout << "Neutre" << std::endl;
+            return -1;
+        }
     }
+    return -1;
 }
 
 QImage* Webcam::getImage()
