@@ -83,18 +83,19 @@ void Labyrinthe::display(GLuint* textures, bool ouvert){
     glBindTexture(GL_TEXTURE_2D,textures[4]);
     j1.Display();
 
-    glBindTexture(GL_TEXTURE_2D,textures[1]);
-    glBegin(GL_QUADS);
-    glColor3ub(255, 255, 255);
-    //sol du labyrinthe
-    glNormal3f(0.0, 0.0, 1.0);
-    glTexCoord2f(0, 0); glVertex3f(0.0,0.0,0.0);
-    glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,0.0);
-    glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,0.0);
-    glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,0.0);
-    glEnd();
+
     //plafond du labyrinthe
     if (!ouvert){
+        glBindTexture(GL_TEXTURE_2D,textures[1]);
+        glBegin(GL_QUADS);
+        glColor3ub(255, 255, 255);
+        //sol du labyrinthe
+        glNormal3f(0.0, 0.0, 1.0);
+        glTexCoord2f(0, 0); glVertex3f(0.0,0.0,0.0);
+        glTexCoord2f(longueur, 0); glVertex3f(longueur,0.0,0.0);
+        glTexCoord2f(longueur, largeur); glVertex3f(longueur,largeur,0.0);
+        glTexCoord2f(0, largeur); glVertex3f(0.0,largeur,0.0);
+        glEnd();
         glBindTexture(GL_TEXTURE_2D,textures[2]);
         glBegin(GL_QUADS);
         glNormal3f(0.0, 0.0, 1.0);

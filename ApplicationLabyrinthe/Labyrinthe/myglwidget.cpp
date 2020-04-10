@@ -76,7 +76,7 @@ void MyGLWidget::initializeGL() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
+    // génération du labyrinthe et placement de la caméra
     labyrinthe->generate();
 
     cam_x = labyrinthe->getJoueur().getPositionX();
@@ -106,23 +106,16 @@ void MyGLWidget::paintGL(){
     glLoadIdentity();
 
     gluPerspective(80.0f, ((float)WIN_WIDTH)/WIN_HEIGHT, 0.2f, 20.0f);
-    //glFrustum(-10, 10, -10, 10, 0.1, 4);
-    //glOrtho(-10, 10, -10, 10, 1, 20);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-// /*
+
     gluLookAt(cam_x, cam_y, cam_z, // position de la caméra
     fix_x, fix_y, fix_z, // position du point que fixe la caméra
     0, 0, 1); // vecteur vertical
-/*
-    gluLookAt(5,3,5,
-              5,3,0,
-              0,1,0);
-*/
+
     labyrinthe->recuperationClef();
     labyrinthe->display(texturesId, false);
-    //finir();
 
 }
 

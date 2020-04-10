@@ -78,7 +78,7 @@ void MainWindow::displayWebcamImage()
 
         if (moveToDo == -1)
         {
-            carte->setFixedWidth(245);
+            carte->setFixedWidth(280);
         }
         else
         {
@@ -129,10 +129,13 @@ void MainWindow::on_resetPushButton_clicked()
     timeElapsed = 0;
     ui->chronoLabel->setText(QString::fromStdString("Ready ?"));
     this->frontWebcam->initializeMotionDetection();
-    glwidget->setLabyrinthe(new Labyrinthe(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt()));
+    int width = min(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt());
+    int height = max(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt());
+    glwidget->setLabyrinthe(new Labyrinthe(width, height));
     glwidget->genererLabyrinthe();
     carte->setLabyrinthe(glwidget->getLabyrinthe());
     glwidget->update();
+    carte->setFixedWidth(280);
     carte->update();
 }
 
@@ -149,10 +152,13 @@ void MainWindow::on_leavePushButton_clicked()
 
 void MainWindow::on_setSizePushButton_clicked()
 {
-    glwidget->setLabyrinthe(new Labyrinthe(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt()));
+    int width = min(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt());
+    int height = max(ui->heightEdit->text().toUInt(), ui->widthEdit->text().toUInt());
+    glwidget->setLabyrinthe(new Labyrinthe(width, height));
     glwidget->genererLabyrinthe();
     carte->setLabyrinthe(glwidget->getLabyrinthe());
     glwidget->update();
+    carte->setFixedWidth(280);
     carte->update();
 }
 

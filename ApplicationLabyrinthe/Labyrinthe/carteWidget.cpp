@@ -28,9 +28,6 @@ void carteWidget::initializeGL() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
 
-    // Activation de l'éclairage
-    //glEnable(GL_LIGHTING);
-
     // Ajout des textures
     QImage murImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/mur2.jpg"));
     QImage solImg = QGLWidget::convertToGLFormat(QImage("../Labyrinthe/textures/sol.jpg"));
@@ -100,17 +97,13 @@ void carteWidget::paintGL(){
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-/*
-    gluLookAt(cam_x, cam_y, cam_z, // position de la caméra
-    fix_x, fix_y, fix_z, // position du point que fixe la caméra
-    0, 0, 1); // vecteur vertical
-*/ // /*
+
     gluLookAt(longueur/2,largeur/2,5,
               longueur/2,largeur/2,0,
               0,1,0);
-// */
+
     labyrinthe->recuperationClef();
     labyrinthe->display(texturesId, true);
-    //finir();
+
 
 }

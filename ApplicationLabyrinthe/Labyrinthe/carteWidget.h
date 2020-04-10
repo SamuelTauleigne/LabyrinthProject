@@ -1,4 +1,4 @@
-    #ifndef CARTEWIDGET_H
+#ifndef CARTEWIDGET_H
 #define CARTEWIDGET_H
 
 #include "labyrinthe.h"
